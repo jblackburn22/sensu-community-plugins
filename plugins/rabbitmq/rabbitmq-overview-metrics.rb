@@ -126,5 +126,5 @@ class RabbitMQMetrics < Sensu::Plugin::Metric::CLI::Graphite
 
     ok
   end
-
 end
+
