@@ -43,22 +43,22 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
     :required => false
 
   option :warning,
-    :description => 'Generate warning if given value is above received value',
+    :description => 'Generate warning if given value exceeds received value',
     :short => '-w VALUE',
     :long => '--warn VALUE',
     :proc => proc{|arg| arg.to_f }
 
   option :critical,
-    :description => 'Generate critical if given value is above received value',
+    :description => 'Generate critical if given value exceeds received value',
     :short => '-c VALUE',
     :long => '--critical VALUE',
     :proc => proc{|arg| arg.to_f }
 
-  option :reset_on_decrease,
-    :description => 'Send OK if value has decreased on any values within END-INTERVAL to END',
+  option :reset_on_change,
+    :description => 'Send OK if value has beneficially changed on any values within END-INTERVAL to END',
     :short => '-r INTERVAL',
     :long => '--reset INTERVAL',
-    :proc => proc{|arg| arg.to_i }
+    :proc => proc{|arg| arg.to_i}
 
   option :name,
     :description => 'Name used in responses',
