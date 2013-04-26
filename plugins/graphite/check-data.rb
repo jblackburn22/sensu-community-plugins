@@ -141,6 +141,8 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
         @start = @raw_data['datapoints'].first.last
         @end = @raw_data['datapoints'].last.last
         @step = ((@end - @start) / @raw_data['datapoints'].size.to_f).ceil
+
+        @data.map! { |val| val || 0 }
         nil
       rescue OpenURI::HTTPError
         critical "Failed to connect to graphite server"
