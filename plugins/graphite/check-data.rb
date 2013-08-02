@@ -94,6 +94,13 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
     :short => '-h',
     :long => '--help'
 
+  option :timespan,
+    :description => "Run check over the last MINUTES minutes of data. default(: 5)",
+    :short => '-S MINUTES',
+    :long => '--timespan MINUTES',
+    :proc => proc {|arg| arg.to_i},
+    :default => 5
+
   # Run checks
   def run
     if config[:help]
@@ -137,7 +144,7 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
         @raw_data = JSON.parse(handle.gets).first
         @raw_data['datapoints'].delete_if{|v| v.first == nil}
         @data = @raw_data['datapoints'].map(&:first)
-        @target = @raw_data['target']
+
         @start = @raw_data['datapoints'].first.last
         @end = @raw_data['datapoints'].last.last
         @step = ((@end - @start) / @raw_data['datapoints'].size.to_f).ceil
@@ -179,6 +186,12 @@ class CheckGraphiteData < Sensu::Plugin::Check::CLI
     else
       false
     end
+  end
+
+  # Returns pretty-formatted data
+  def pretty_data
+    data_sequence = @data.join(', ')
+    "[%s]" % data_sequence
   end
 
   # Returns formatted target with hostname replacing any $ characters
